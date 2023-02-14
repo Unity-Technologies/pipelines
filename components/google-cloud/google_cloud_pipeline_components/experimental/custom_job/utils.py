@@ -23,8 +23,12 @@ from typing import Callable, Dict, Optional, Sequence
 from google_cloud_pipeline_components.aiplatform import utils
 from kfp import components
 from kfp.components import structures
-from kfp.dsl import dsl_utils
-from kfp.v2.components.types import type_utils
+try:
+  from kfp.dsl import dsl_utils
+except ImportError:
+  # For KFP V2
+  from kfp.deprecated.dsl import dsl_utils
+from kfp.deprecated.dsl import type_utils
 
 _DEFAULT_CUSTOM_JOB_CONTAINER_IMAGE = utils.DEFAULT_CONTAINER_IMAGE
 # Executor replacement is used as executor content needs to be jsonified before
@@ -148,7 +152,10 @@ def create_custom_training_job_op_from_component(
   output_specs = []
 
   # pytype: disable=attribute-error
-
+  print("yyyyyy",component_spec)
+  print("yyyyyy2",component_spec.component_spec)
+  print("yyyyyy3",component_spec.component_spec.inputs)
+  print("yyyyyy4",component_spec.component_spec.outputs)
   if component_spec.component_spec.inputs:
     input_specs = component_spec.component_spec.inputs
   if component_spec.component_spec.outputs:
