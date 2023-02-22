@@ -534,8 +534,9 @@ export class NewRun extends Page<{ namespace?: string }, NewRunState> {
           <Input
             value={serviceAccount}
             onChange={this.handleChange('serviceAccount')}
-            label='Service Account (Optional)'
+            label='Service Account'
             variant='outlined'
+            required={true}
           />
 
           {/* One-off/Recurring Run Type */}
@@ -1167,13 +1168,16 @@ export class NewRun extends Page<{ namespace?: string }, NewRunState> {
 
   private _validate(): void {
     // Validate state
-    const { pipelineVersion, workflowFromRun, maxConcurrentRuns, runName, trigger } = this.state;
+    const { pipelineVersion, workflowFromRun, maxConcurrentRuns, runName, trigger, serviceAccount } = this.state;
     try {
       if (!pipelineVersion && !workflowFromRun) {
         throw new Error('A pipeline version must be selected');
       }
       if (!runName) {
         throw new Error('Run name is required');
+      }
+      if (!serviceAccount) {
+        throw new Error('Service account is required');
       }
 
       const hasTrigger = trigger && (!!trigger.cron_schedule || !!trigger.periodic_schedule);
