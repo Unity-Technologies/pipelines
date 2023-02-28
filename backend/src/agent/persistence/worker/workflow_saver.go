@@ -66,6 +66,10 @@ func (s *WorkflowSaver) Save(key string, namespace string, name string, nowEpoch
 		log.Infof("Skip syncing Workflow (%v): workflow marked as persisted.", name)
 		return nil
 	}
+
+	wf.Kind = "Workflow"
+	wf.APIVersion = "argoproj.io/v1alpha1"
+
 	// Save this Workflow to the database.
 	err = s.pipelineClient.ReportWorkflow(wf)
 	retry := util.HasCustomCode(err, util.CUSTOM_CODE_TRANSIENT)
