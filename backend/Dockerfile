@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # 1. Build api server application
-FROM golang:1.17.6-stretch as builder
+FROM golang:1.17.13-buster as builder
 RUN apt-get update && apt-get install -y cmake clang musl-dev openssl
 WORKDIR /go/src/github.com/kubeflow/pipelines
 COPY . .
@@ -56,7 +56,7 @@ RUN set -e; \
     done
 
 # 3. Start api web server
-FROM debian:stretch
+FROM debian:stable
 
 ARG COMMIT_SHA=unknown
 ENV COMMIT_SHA=${COMMIT_SHA}
