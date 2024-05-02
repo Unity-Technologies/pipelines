@@ -141,7 +141,8 @@ export function getRunDuration(run?: ApiRun): string {
 }
 
 export function getRunDurationV2(run?: V2beta1Run): string {
-  return !run || !run.created_at || !run.finished_at || !hasFinishedV2(run.state)
+  // HACK: After upgrading to v2.2.0, finished_at default value 0, became unix timestamp 0 as a string
+  return !run || !run.created_at || !run.finished_at || new Date(run.finished_at).valueOf() === 0 || !hasFinishedV2(run.state)
     ? '-'
     : getDuration(new Date(run.created_at), new Date(run.finished_at));
 }
